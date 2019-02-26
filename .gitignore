@@ -1,0 +1,13 @@
+*~
+*.sh
+*.o
+*.i
+build/
+lib/
+
+.cproject
+.project
+.settings/
+.DS_Store
+
+sftp-config.json
