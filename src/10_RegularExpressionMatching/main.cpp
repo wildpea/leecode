@@ -1,5 +1,7 @@
 #include <string>
 #include "gtest/gtest.h"
+#include "gflags/gflags.h"
+#include "glog/logging.h"
 
 using namespace std;
 
@@ -10,28 +12,56 @@ public:
     {
         if (!checkS(s) || !checkP(p)) return false;
 
-        //for ()
+        for (int32_t i = 0, len = s.length(); i < len; ++i)
+        {
+            char *s_start = &s.at(i), *s_c = s_start;
+            char *p_start = &p.at(0), *p_c = p_start;
+            while (*p_c != '\0' &&  *p_c != '\0')
+            {
+                LOG(INFO) << "s_c " << *s_c << "\tp_c " << *p_c;
 
-        return true;
+                if (*s_c != *p_c && *p_c != '.')
+                {
+                    break;
+                }
+
+                ++s_c;
+                ++p_c;
+            }
+
+            if (*p_c == '\0')
+                return true;
+        }
+
+        return false;
     }
 
     bool checkS(string &s)
     {
+        if (s.empty()) return false;
         for (int i = 0, len = s.length(); i < len; ++i)
         {
-            if (s.at(i) < 'a' || s.at(i) > 'z')
+            char c = s.at(i);
+            if (c < 'a' || c > 'z')
+            {
+                cout << c << endl;
                 return false;
+            }
         }
         return true;
     }
 
     bool checkP(string &s)
     {
+        if (s.empty()) return false;
         for (int i = 0, len = s.length(); i < len; ++i)
         {
             char c = s.at(i);
             if ((c < 'a' || c > 'z') && c != '*' && c != '.')
+            {
+                cout << c << endl;
                 return false;
+            }
         }
         return true;
     }
@@ -44,13 +74,31 @@ TEST(test_Solution, test_1)
     EXPECT_EQ(solution.isMatch("abcd", "a"), true);
     EXPECT_EQ(solution.isMatch("abcd", "ab"), true);
     EXPECT_EQ(solution.isMatch("abcd", "ac"), false);
-//    EXPECT_EQ(solution.isMatch("abcd", ".*"), true);
+    EXPECT_EQ(solution.isMatch("abcd", "bc"), true);
+    EXPECT_EQ(solution.isMatch("abcd", "a."), true);
+    EXPECT_EQ(solution.isMatch("abcd", ".b"), true);
+    EXPECT_EQ(solution.isMatch("abcd", "z."), false);
+    EXPECT_EQ(solution.isMatch("abcd", ".*"), true);
 //    EXPECT_EQ(solution.isMatch("abcd", "a.*"), true);
 //    EXPECT_EQ(solution.isMatch("abcd", "ac.*"), false);
 }
 
+DEFINE_string(cmd, "", "cmd");
+DEFINE_string(logdir, "./log", "logdir");
+
+
 int32_t main(int32_t argc, char **argv)
 {
+    gflags::ParseCommandLineFlags(&argc, &argv, false);
     testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+    google::InitGoogleLogging(argv[0]);
+    FLAGS_log_dir = FLAGS_logdir;
+
+    //LOG(INFO) << FLAGS_cmd;
+
+    int32_t ret = RUN_ALL_TESTS();
+    LOG(INFO) << "ret:" << ret;
+
+    google::ShutdownGoogleLogging();
+    return 0;
 }
