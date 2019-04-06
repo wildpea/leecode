@@ -1,4 +1,6 @@
 #include <string>
+#include <set>
+#include <map>
 #include "gtest/gtest.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
@@ -18,9 +20,35 @@ M             1000
 class Solution
 {
 public:
-    int romanToInt(string s) {
+    int romanToInt(string s)
     {
-        return 0;
+        set<char> prefix = {'I', 'X', 'C'};
+        map<char, int> c_num;
+        c_num['I'] = 1;
+        c_num['V'] = 5;
+        c_num['X'] = 10;
+        c_num['L'] = 50;
+        c_num['C'] = 100;
+        c_num['D'] = 500;
+        c_num['M'] = 1000;
+
+        int num = 0;
+        char last_c = '\0';
+        for (int i = 0, len = s.size(); i < len; ++i)
+        {
+            char c = s.at(i);
+
+            num += c_num[c];
+            if (last_c && prefix.find(last_c) != prefix.end() && last_c != c && c_num[last_c] < c_num[c])
+            {
+                num -= c_num[last_c];
+                num -= c_num[last_c];
+            }
+
+            last_c = c;
+        }
+
+        return num;
     }
 };
 
