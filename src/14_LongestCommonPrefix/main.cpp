@@ -1,4 +1,5 @@
 #include <string>
+#include <sstream>
 #include "gtest/gtest.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
@@ -10,9 +11,44 @@ class Solution
 public:
     string longestCommonPrefix(vector<string>& strs)
     {
-        string str;
+        if (strs.size() == 0) return "";
+        if (strs.size() == 1) return strs[0];
 
-        return str;
+        stringstream ss;
+        char c = '\0';
+        int i = 0;
+        bool equl;
+        char r;
+        do
+        {
+            equl = true;
+            for (auto iter = strs.begin(); iter != strs.end(); ++iter)
+            {
+                if (iter->size() < i+1)
+                {
+                    equl = false;
+                    break;
+                }
+                r = iter->at(i);
+                if (iter == strs.begin()) c = r;
+                else
+                {
+                    if (r != c)
+                    {
+                        equl = false;
+                        break;
+                    }
+                }
+            }
+
+            if (!equl) break;
+
+            ss << c;
+            ++i;
+
+        } while (true);
+
+        return ss.str();
     }
 };
 
