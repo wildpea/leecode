@@ -37,7 +37,8 @@ int32_t main(int32_t argc, char **argv)
     //LOG(INFO) << FLAGS_cmd;
 
     int32_t ret = RUN_ALL_TESTS();
-    LOG(INFO) << "ret:" << ret;
+    //LOG(INFO) << "ret:" << ret;
+    cout << ret << endl;
 
     google::ShutdownGoogleLogging();
     return 0;
