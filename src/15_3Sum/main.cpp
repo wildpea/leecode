@@ -131,6 +131,10 @@ TEST(test_Solution, test_1)
     vector<int> v6 = {-2,0,1,1,2};
     vector<vector<int>> r6 = {{-2,1,1},{-2,0,2}};
     EXPECT_EQ(solution.threeSum(v6), r6);
+
+    vector<int> v7 = {1, 1, -2};
+    vector<vector<int>> r7 = {{-2, 1, 1}};
+    EXPECT_EQ(solution.threeSum(v7), r7);
 }
 
 DEFINE_string(cmd, "", "cmd");

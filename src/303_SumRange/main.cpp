@@ -8,20 +8,35 @@
 
 using namespace std;
 
-class Solution
+class NumArray
 {
 public:
-    int run()
-    {
+	vector<int> rst;
+	NumArray(vector<int>& nums) {
+		int len = nums.size();
+		rst.push_back(nums[0]);
+		for (int i = 1; i < len; ++i)
+		{
+			rst.push_back(nums[i] + rst[i-1]);
+		}
 
+	}
+
+    int sumRange(int i, int j)
+    {
+    	if (i == 0) return rst[j];
+    	else return rst[j] - rst[i -1];
     }
 };
 
 TEST(test_Solution, test_1)
 {
-    Solution solution;
+	vector<int> v1 = {-2, 0, 3, -5, 2, -1};
+	NumArray solution(v1);
 
-    EXPECT_EQ(solution.run("III"), 3);
+    EXPECT_EQ(solution.sumRange(0, 2), 1);
+    EXPECT_EQ(solution.sumRange(2, 5), -1);
+    EXPECT_EQ(solution.sumRange(0, 5), -3);
 }
 
 DEFINE_string(cmd, "", "cmd");

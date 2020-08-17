@@ -11,9 +11,17 @@ using namespace std;
 class Solution
 {
 public:
-    int run()
+    int maxSubArray(vector<int>& nums)
     {
+    	vector<int> r(nums);
+    	int m = r[0];
 
+    	for (int i = 1, len = nums.size(); i < len; ++i)
+    	{
+    		r[i] = r[i - 1] > 0 ? r[i] + r[i - 1] : r[i];
+    		m = max(m, r[i]);
+    	}
+    	return m;
     }
 };
 
@@ -21,7 +29,10 @@ TEST(test_Solution, test_1)
 {
     Solution solution;
 
-    EXPECT_EQ(solution.run("III"), 3);
+    vector<int> v1 = {-2,1,-3,4,-1,2,1,-5,4};
+    EXPECT_EQ(solution.maxSubArray(v1), 6);
+    vector<int> v2 = {-2,1,-3,4,-1};
+    EXPECT_EQ(solution.maxSubArray(v2), 4);
 }
 
 DEFINE_string(cmd, "", "cmd");

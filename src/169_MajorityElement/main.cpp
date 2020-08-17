@@ -1,7 +1,7 @@
 #include <string>
 #include <set>
 #include <map>
-#include <vector>
+#include <algorithm>
 #include "gtest/gtest.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
@@ -11,9 +11,28 @@ using namespace std;
 class Solution
 {
 public:
-    int run()
-    {
+    int majorityElement(vector<int>& nums) {
+        //1:
+//        sort(nums.begin(), nums.end());
+//        int len = nums.size();
+//        return nums[len / 2];
 
+        //2:
+        int x = 0;
+        int count = 0;
+        for (int i = 0, len = nums.size(); i < len; ++i)
+        {
+            if (count == 0) {
+                x = nums[i];
+                ++count;
+            }else if (x == nums[i]) {
+                ++count;
+            } else {
+                count--;
+            }
+        }
+
+        return x;
     }
 };
 
@@ -21,7 +40,11 @@ TEST(test_Solution, test_1)
 {
     Solution solution;
 
-    EXPECT_EQ(solution.run("III"), 3);
+    vector<int> v1 = {3,2,3};
+    EXPECT_EQ(solution.majorityElement(v1), 3);
+
+    vector<int> v2 = {2,2,1,1,1,2,2};
+    EXPECT_EQ(solution.majorityElement(v2), 2);
 }
 
 DEFINE_string(cmd, "", "cmd");

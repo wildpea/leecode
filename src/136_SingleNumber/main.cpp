@@ -1,7 +1,7 @@
 #include <string>
+#include <vector>
 #include <set>
 #include <map>
-#include <vector>
 #include "gtest/gtest.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
@@ -11,9 +11,13 @@ using namespace std;
 class Solution
 {
 public:
-    int run()
-    {
-
+    int singleNumber(vector<int>& nums) {
+        int x = 0;
+        for (int i = 0, len = nums.size(); i < len; ++i)
+        {
+            x ^= nums[i];
+        }
+        return x;
     }
 };
 
@@ -21,7 +25,11 @@ TEST(test_Solution, test_1)
 {
     Solution solution;
 
-    EXPECT_EQ(solution.run("III"), 3);
+    vector<int> v1 = {2,2,1};
+    EXPECT_EQ(solution.singleNumber(v1), 1);
+
+    vector<int> v2 = {4,1,2,1,2};
+    EXPECT_EQ(solution.singleNumber(v2), 4);
 }
 
 DEFINE_string(cmd, "", "cmd");

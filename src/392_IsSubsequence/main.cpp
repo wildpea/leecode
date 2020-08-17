@@ -11,9 +11,27 @@ using namespace std;
 class Solution
 {
 public:
-    int run()
+    bool run(string s, string t)
     {
+    	if (s.size() > t.size()) return false;
 
+    	int t_cur = 0;
+    	for (int i = 0, len = s.size(); i < len; ++i)
+    	{
+    		bool found = false;
+    		for (int j = t_cur, len_j = t.size(); j < len_j; ++j)
+    		{
+    			if (s.at(i) == t.at(j)) {
+    				found = true;
+    				t_cur = j+1;
+    				break;
+    			}
+    		}
+    		if (!found)
+    			return false;
+    	}
+
+    	return true;
     }
 };
 
@@ -21,7 +39,9 @@ TEST(test_Solution, test_1)
 {
     Solution solution;
 
-    EXPECT_EQ(solution.run("III"), 3);
+    EXPECT_EQ(solution.run("abc", "ahbgdc"), true);
+    EXPECT_EQ(solution.run("acb", "ahbgdc"), false);
+    EXPECT_EQ(solution.run("axc", "ahbgdc"), false);
 }
 
 DEFINE_string(cmd, "", "cmd");

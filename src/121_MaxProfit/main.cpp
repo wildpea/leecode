@@ -1,7 +1,7 @@
 #include <string>
 #include <set>
-#include <map>
 #include <vector>
+#include <map>
 #include "gtest/gtest.h"
 #include "gflags/gflags.h"
 #include "glog/logging.h"
@@ -11,9 +11,15 @@ using namespace std;
 class Solution
 {
 public:
-    int run()
+    int maxProfit(vector<int>& prices)
     {
-
+    	int rt = 0;
+    	for (auto iter = prices.begin(); iter != prices.end(); ++iter) {
+    		for (auto iter2 = iter+1; iter2 != prices.end(); ++iter2) {
+    			rt = max(rt, *iter2 - *iter);
+    		}
+    	}
+    	return rt;
     }
 };
 
@@ -21,7 +27,11 @@ TEST(test_Solution, test_1)
 {
     Solution solution;
 
-    EXPECT_EQ(solution.run("III"), 3);
+    vector<int> v1 = {7,1,5,3,6,4};
+    EXPECT_EQ(solution.maxProfit(v1), 5);
+
+    vector<int> v2 = {7,6,5,4,3,2};
+    EXPECT_EQ(solution.maxProfit(v2), 0);
 }
 
 DEFINE_string(cmd, "", "cmd");
