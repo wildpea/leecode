@@ -3,7 +3,8 @@
 class Solution
 {
 public:
-    int run() {
+    int run()
+    {
 
     }
 };

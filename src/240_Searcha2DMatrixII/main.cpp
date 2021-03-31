@@ -15,28 +15,26 @@ public:
 
         int m = matrix.size();
         int n = matrix[0].size();
-        int a = 0, x = 0, y = 0;
+        int a = 0, x = m-1, y = 0;
 
-        while (m != 0 && n != 0) {
-            a = min(m,n);
-            cout << "m: " << m << ", n: " << n << ", a: " << a << " , x: " << x << ", y: " << y <<endl;
-            for (int i = 0; i < a; ++i)
-            {
-                if (matrix[i+x][i+y] == target) return true;
-                if (matrix[i+x][i+y] > target) {
-                    if (find(matrix[i+x].begin(), matrix[i+x].begin() + i, target) != matrix[i+x].begin() + i) return true;
-                    for (int j = 0; j < i; ++j)
-                        if (matrix[j+x][i+y] == target) return true;
-                }
-            }
-            if (m > n) {
-                x += n;
-                m -= n;
-            } else {
-                y += m;
-                if (m == n) m -= m;
-                n -= m;
-            }
+        while (x >= 0 && y <= n-1) {
+        	int c = matrix[x][y];
+        	cout << x << "," << y << "," << c << endl;
+        	if (c == target) {
+        		return true;
+        	}
+        	if (c > target) {
+				x--;
+			} else if (y != n-1) {
+        		if (matrix[x][y+1] > target) {
+        			x--;
+        			continue;
+        		} else {
+        			y++;
+        		}
+        	} else {
+        		return false;
+        	}
         }
 
         return false;
@@ -47,24 +45,31 @@ TEST(test_Solution, test_1)
 {
     Solution solution;
 
-    vector<vector<int>> vc;
 
     vector<int> v1 = {1,   4,  7, 11, 15, 17};
     vector<int> v2 = {2,   5,  8, 12, 19, 21};
     vector<int> v3 = {3,   6,  9, 16, 22, 25};
-    vector<int> v5 = {10, 13, 14, 17, 24, 27};
-    vector<int> v6 = {18, 21, 23, 26, 30, 31};
-    vc.push_back(v1);
-    vc.push_back(v2);
-    vc.push_back(v3);
-    vc.push_back(v5);
-    vc.push_back(v6);
+    vector<int> v4 = {10, 13, 14, 17, 24, 27};
+    vector<int> v5 = {18, 21, 23, 26, 30, 31};
+    vector<vector<int>> vc = {v1, v2, v3, v4, v5};
+
 
     EXPECT_EQ(solution.searchMatrix(vc, 5), true);
     EXPECT_EQ(solution.searchMatrix(vc, 11), true);
     EXPECT_EQ(solution.searchMatrix(vc, 6), true);
     EXPECT_EQ(solution.searchMatrix(vc, 25), true);
     EXPECT_EQ(solution.searchMatrix(vc, 20), false);
+
+
+//	vector<int> v1 = {5};
+//    vector<int> v2 = {6};
+//    vector<vector<int>> vc = {v1, v2};
+//
+//    EXPECT_EQ(solution.searchMatrix(vc, 5), true);
+//    EXPECT_EQ(solution.searchMatrix(vc, 11), false);
+//    EXPECT_EQ(solution.searchMatrix(vc, 6), true);
+//    EXPECT_EQ(solution.searchMatrix(vc, 25), false);
+//    EXPECT_EQ(solution.searchMatrix(vc, 20), false);
 }
 
 DEFINE_string(cmd, "", "cmd");
